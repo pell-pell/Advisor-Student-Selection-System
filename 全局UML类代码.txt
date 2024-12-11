@@ -1,0 +1,397 @@
+全局UML类代码
+人
+@startuml
+
+' 考生类
+class CandidateInfo {
+  +String candidate_id
+  +String name
+  +Date birth_date
+  +String id_card
+  +String region
+  +String undergraduate_major
+  +String undergraduate_school
+  +String school_type
+  +String email
+  +String phone
+  +String resume
+  +addCandidate()
+  +updateCandidate()
+  +deleteCandidate()
+  +getCandidateScores()
+  +submitApplication()
+}
+
+' 导师类
+class Mentor {
+  +String mentor_id
+  +String name
+  +String title
+  +String email
+  +String phone
+  +String photo
+  +String bio
+  +boolean eligible_for_admission
+  +int quota
+  +addMentor()
+  +updateMentor()
+  +deleteMentor()
+  +getMentorCandidates()
+  +assignMentorToSubject()
+  +confirmMentorSelection()
+}
+
+' 导师-学生选择确认类
+class MentorSelectionConfirmation {
+  +int confirmation_id
+  +String mentor_id
+  +String student_id
+  +String confirmation_status
+  +DateTime confirmation_time
+  +confirmSelection()
+  +updateConfirmationStatus()
+  +getSelectionStatus()
+}
+
+' 学生报考志愿类
+class ApplicationPreferences {
+  +String candidate_id
+  +String applied_major
+  +String applied_sub_major
+  +String preferred_mentor1_id
+  +String preferred_mentor2_id
+  +String preferred_mentor3_id
+  +char accept_adjustment
+  +addApplication()
+  +updateApplication()
+  +deleteApplication()
+  +getCandidatePreferences()
+}
+
+' 初试成绩类
+class PretestScores {
+  +String candidate_id
+  +double math_score
+  +double foreign_language_score
+  +double politics_score
+  +double major_score
+  +double pretest_total_score
+  +addPretestScores()
+  +updatePretestScores()
+  +deletePretestScores()
+}
+
+' 复试成绩类
+class RetestScores {
+  +String candidate_id
+  +double major_score
+  +double foreign_language_score
+  +double comprehensive_score
+  +double retest_total_score
+  +addRetestScores()
+  +updateRetestScores()
+  +deleteRetestScores()
+}
+
+' 考生录取信息类
+class AdmissionInfo {
+  +String student_id
+  +String mentor_id
+  +String admission_status
+  +String mentor_admission_signature
+  +String final_selection_status
+  +DateTime result_time
+  +addAdmissionInfo()
+  +updateAdmissionInfo()
+  +deleteAdmissionInfo()
+  +getAdmissionStatus()
+}
+
+' 学科秘书类
+class Secretary {
+  +String name
+  +pushMentorStudentSelection()
+  +manageSelectionProcess()
+  +viewSelectionProgress()
+}
+
+' 学科负责人类
+class DepartmentHead {
+  +String name
+  +setResearchDirection()
+  +approveAdmissionQuota()
+  +reviewAdmissionCatalog()
+}
+
+' 研究生管理秘书类
+class GraduateSecretary {
+  +String name
+  +addTestScores()
+  +reviewApplication()
+  +publishAdmissionResults()
+  +handleReviewRequests()
+}
+
+' 研究生主管领导类
+class GraduateLeader {
+  +String name
+  +reviewMentorStudentSelection()
+  +approveAdmissionResults()
+  +superviseSelectionProcess()
+}
+
+' 监督成员类
+class Supervisor {
+  +String name
+  +viewSelectionProcess()
+  +viewAdmissionResults()
+}
+
+' 关联关系：导师与二级学科之间的关系
+class MentorSecondarySubject {
+  +String mentor_id
+  +String secondary_subject_id
+  +assignMentorToSubject()
+  +removeMentorFromSubject()
+}
+
+' 关联：考生与报考志愿的关系
+CandidateInfo --|> ApplicationPreferences : "填写报考志愿"
+Mentor --|> MentorSelectionConfirmation : "选择导师"
+CandidateInfo --|> PretestScores : "录入初试成绩"
+CandidateInfo --|> RetestScores : "录入复试成绩"
+MentorSelectionConfirmation --> Mentor : "确认导师选择"
+GraduateSecretary --> PretestScores : "录入成绩"
+GraduateSecretary --> RetestScores : "录入复试成绩"
+GraduateSecretary --> AdmissionInfo : "发布录取结果"
+Secretary --> MentorSelectionConfirmation : "管理导师与学生选择"
+DepartmentHead --> Mentor : "审议导师资格"
+GraduateLeader --> MentorSelectionConfirmation : "审议导师学生选择结果"
+Supervisor --> MentorSelectionConfirmation : "查看选择过程"
+
+' 实现过程关联
+GraduateSecretary --> GraduateLeader : "汇报选择结果"
+MentorSelectionConfirmation --> AdmissionInfo : "最终录取选择结果"
+
+@enduml
+*************************
+数据表
+@startuml
+
+' 学院表类
+class College {
+  +String college_id
+  +String name
+  +addCollege()
+  +updateCollege()
+  +deleteCollege()
+}
+
+' 一级学科表类
+class PrimarySubject {
+  +String primary_subject_id
+  +String name
+  +String college_id
+  +addPrimarySubject()
+  +updatePrimarySubject()
+  +deletePrimarySubject()
+}
+
+' 二级学科表类
+class SecondarySubject {
+  +String secondary_subject_id
+  +String name
+  +String primary_subject_id
+  +addSecondarySubject()
+  +updateSecondarySubject()
+  +deleteSecondarySubject()
+}
+
+' 招生目录表类
+class AdmissionCatalog {
+  +String catalog_id
+  +String secondary_subject_id
+  +int year
+  +int total_quota
+  +int recommend_quota
+  +int supplemental_quota
+  +String additional_notes
+  +String preliminary_exam_subjects
+  +String subject_retest
+  +addAdmissionCatalog()
+  +updateAdmissionCatalog()
+  +deleteAdmissionCatalog()
+}
+
+' 导师表类
+class Mentor {
+  +String mentor_id
+  +String name
+  +String title
+  +String email
+  +String phone
+  +String photo
+  +String bio
+  +boolean eligible_for_admission
+  +int quota
+  +addMentor()
+  +updateMentor()
+  +deleteMentor()
+  +getMentorInfo()
+}
+
+' 导师-二级学科关联表类
+class MentorSecondarySubject {
+  +String mentor_id
+  +String secondary_subject_id
+  +assignMentorToSecondarySubject()
+  +removeMentorFromSecondarySubject()
+}
+
+' 考生信息表类
+class CandidateInfo {
+  +String candidate_id
+  +String name
+  +Date birth_date
+  +String id_card
+  +String region
+  +String undergraduate_major
+  +String undergraduate_school
+  +String school_type
+  +String email
+  +String phone
+  +String resume
+  +addCandidateInfo()
+  +updateCandidateInfo()
+  +deleteCandidateInfo()
+}
+
+' 初试成绩表类
+class PretestScores {
+  +String candidate_id
+  +double math_score
+  +double foreign_language_score
+  +double politics_score
+  +double major_score
+  +double pretest_total_score
+  +addPretestScores()
+  +updatePretestScores()
+  +deletePretestScores()
+}
+
+' 复试成绩表类
+class RetestScores {
+  +String candidate_id
+  +double major_score
+  +double foreign_language_score
+  +double comprehensive_score
+  +double retest_total_score
+  +addRetestScores()
+  +updateRetestScores()
+  +deleteRetestScores()
+}
+
+' 考生报考志愿表类
+class ApplicationPreferences {
+  +String candidate_id
+  +String applied_major
+  +String applied_sub_major
+  +String preferred_mentor1_id
+  +String preferred_mentor2_id
+  +String preferred_mentor3_id
+  +String accept_adjustment
+  +addApplicationPreferences()
+  +updateApplicationPreferences()
+  +deleteApplicationPreferences()
+}
+
+' 导师选择确认表类
+class MentorSelectionConfirmation {
+  +int confirmation_id
+  +String mentor_id
+  +String student_id
+  +String confirmation_status
+  +DateTime confirmation_time
+  +addMentorSelectionConfirmation()
+  +updateMentorSelectionConfirmation()
+  +getSelectionStatus()
+}
+
+' 考生录取信息表类
+class AdmissionInfo {
+  +String student_id
+  +String mentor_id
+  +String admission_status
+  +String mentor_admission_signature
+  +String final_selection_status
+  +DateTime result_time
+  +addAdmissionInfo()
+  +updateAdmissionInfo()
+  +deleteAdmissionInfo()
+}
+
+' 学科秘书类
+class DepartmentSecretary {
+  +String name
+  +pushMentorStudentSelection()
+  +manageSelectionProcess()
+  +viewSelectionProgress()
+}
+
+' 学科负责人类
+class SubjectHead {
+  +String name
+  +setResearchDirection()
+  +approveAdmissionQuota()
+  +reviewAdmissionCatalog()
+}
+
+' 研究生管理秘书类
+class GraduateSecretary {
+  +String name
+  +addPretestScores()
+  +addRetestScores()
+  +reviewApplicationPreferences()
+  +publishAdmissionResults()
+  +handleReviewRequests()
+}
+
+' 研究生主管领导类
+class GraduateLeader {
+  +String name
+  +reviewMentorStudentSelection()
+  +approveAdmissionResults()
+  +superviseSelectionProcess()
+}
+
+' 监督成员类
+class Supervisor {
+  +String name
+  +viewSelectionProcess()
+  +viewAdmissionResults()
+}
+
+' 关联关系：导师与二级学科之间的关系
+MentorSecondarySubject --> Mentor : "关联导师与学科"
+MentorSecondarySubject --> SecondarySubject : "导师对应二级学科"
+
+' 关联关系：考生与报考志愿的关系
+CandidateInfo --|> ApplicationPreferences : "填写报考志愿"
+Mentor --|> MentorSelectionConfirmation : "选择导师"
+CandidateInfo --|> PretestScores : "录入初试成绩"
+CandidateInfo --|> RetestScores : "录入复试成绩"
+MentorSelectionConfirmation --> Mentor : "确认导师选择"
+GraduateSecretary --> PretestScores : "录入初试成绩"
+GraduateSecretary --> RetestScores : "录入复试成绩"
+GraduateSecretary --> AdmissionInfo : "发布录取结果"
+DepartmentSecretary --> MentorSelectionConfirmation : "管理导师与学生选择"
+SubjectHead --> Mentor : "审议导师资格"
+GraduateLeader --> MentorSelectionConfirmation : "审议导师学生选择结果"
+Supervisor --> MentorSelectionConfirmation : "查看选择过程"
+
+' 实现过程关联
+GraduateSecretary --> GraduateLeader : "汇报选择结果"
+MentorSelectionConfirmation --> AdmissionInfo : "最终录取选择结果"
+
+@enduml
+
