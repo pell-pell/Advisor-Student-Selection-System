@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.CandidateMapper">
+
+    <!-- 插入考生信息 -->
+    <insert id="insertCandidate" parameterType="com.example.model.Candidate">
+        INSERT INTO candidate_info (candidate_id, name, birth_date, id_card, region, undergraduate_major, 
+            undergraduate_school, school_type, email, phone, resume)
+        VALUES (#{candidateId}, #{name}, #{birthDate}, #{idCard}, #{region}, #{undergraduateMajor},
+            #{undergraduateSchool}, #{schoolType}, #{email}, #{phone}, #{resume})
+    </insert>
+    <!-- 更新考生信息 -->
+  	<update id="updateCandidate" parameterType="com.example.model.Candidate">
+        UPDATE candidate_info
+        SET name = #{name}, birth_date = #{birthDate}, id_card = #{idCard}, region = #{region},
+            undergraduate_major = #{undergraduateMajor}, undergraduate_school = #{undergraduateSchool},
+            school_type = #{schoolType}, email = #{email}, phone = #{phone}, resume = #{resume}
+        WHERE candidate_id = #{candidateId}
+    </update>
+    
+    <!-- 删除考生信息 -->
+  	<delete id="deleteCandidate" parameterType="java.lang.String">
+        DELETE FROM candidate_info WHERE candidate_id = #{candidateId}
+    </delete>
+    
+    <!-- 根据考生ID查询考生 -->
+  	<select id="getCandidateById" parameterType="java.lang.String" resultType="com.example.model.Candidate">
+        SELECT * FROM candidate_info WHERE candidate_id = #{candidateId}
+    </select> 
+    
+    <!-- 查询所有考生 -->
+  	<select id="getAllCandidates" resultType="com.example.model.Candidate">
+        SELECT * FROM candidate_info
+    </select>
+</mapper>
