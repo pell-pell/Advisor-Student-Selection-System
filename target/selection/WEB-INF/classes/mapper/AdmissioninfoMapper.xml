@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.selection.mapper.AdmissioninfoMapper">
+
+
+    <select id="getPageList" resultType="com.selection.entity.view.AdmissioninfoView" parameterType="com.selection.entity.view.AdmissioninfoView">
+        select ss.*,ps.name as candidateName,mt.name as mentorName from admissioninfo ss
+        left join candidate_info ps on ss.candidate_id=ps.id
+        left join mentor mt on ss.mentor_id=mt.id
+        where 1=1
+        <if test="obj.candidateName!=null and obj.candidateName!=''">
+            and ps.name like concat('%',#{obj.candidateName},'%')
+        </if>
+        <if test="obj.candidateId!=null">
+            and ss.candidate_id=#{obj.candidateId}
+        </if>
+        <if test="obj.mentorId!=null">
+            and ss.mentor_id=#{obj.mentorId}
+        </if>
+    </select>
+
+
+    <insert id="insertDb" parameterType="com.selection.entity.Admissioninfo">
+         insert into admissioninfo(candidate_id,mentor_id,admission_status,mentor_admission_signature,final_selection_status,result_time)
+         values (#{obj.candidateId},#{obj.mentorId},#{obj.admissionStatus},#{obj.mentorAdmissionSignature},#{obj.finalSelectionStatus},#{obj.resultTime})
+    </insert>
+
+    <select id="getByIds" resultType="com.selection.entity.Admissioninfo" parameterType="java.lang.Integer">
+        select * from admissioninfo
+        where id=#{id}
+    </select>
+
+    <update id="updatesDb" parameterType="com.selection.entity.Admissioninfo">
+        update admissioninfo
+        <set>
+            <if test="obj.mentorId != null">mentor_id = #{obj.mentorId},</if>
+            <if test="obj.admissionStatus != null">admission_status = #{obj.admissionStatus},</if>
+            <if test="obj.mentorAdmissionSignature != null">mentor_admission_signature = #{obj.mentorAdmissionSignature},</if>
+            <if test="obj.finalSelectionStatus != null">final_selection_status = #{obj.finalSelectionStatus},</if>
+            <if test="obj.resultTime != null">result_time = #{obj.resultTime},</if>
+            <if test="obj.candidateId != null">candidate_id = #{obj.candidateId},</if>
+        </set>
+        where id = #{obj.id}
+    </update>
+
+    <delete id="deleteDb" parameterType="java.lang.Integer">
+		delete from admissioninfo where id = #{id}
+	</delete>
+
+
+</mapper>

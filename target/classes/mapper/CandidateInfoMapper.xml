@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.selection.mapper.CandidateInfoMapper">
+
+
+    <select id="getPageList" resultType="com.selection.entity.CandidateInfo" parameterType="com.selection.entity.CandidateInfo">
+        select * from candidate_info
+        where 1=1
+        <if test="obj.name!=null and obj.name!=''">
+            and name like concat('%',#{obj.name},'%')
+        </if>
+        <if test="obj.id!=null">
+            and id=#{obj.id}
+        </if>
+    </select>
+
+
+    <insert id="insertDb" parameterType="com.selection.entity.CandidateInfo">
+         insert into candidate_info(name,birth_date,id_card,region,undergraduate_major,undergraduate_school,school_type,email,phone,photo,pwd,resume)
+         values (#{obj.name},#{obj.birthDate},#{obj.idCard},#{obj.region},#{obj.undergraduateMajor},#{obj.undergraduateSchool},#{obj.schoolType},#{obj.email}
+         ,#{obj.phone},#{obj.photo},#{obj.pwd},#{obj.resume})
+    </insert>
+
+    <select id="getByIds" resultType="com.selection.entity.CandidateInfo" parameterType="java.lang.Integer">
+        select * from candidate_info
+        where id=#{id}
+    </select>
+
+    <update id="updatesDb" parameterType="com.selection.entity.CandidateInfo">
+        update candidate_info
+        <set>
+            <if test="obj.name != null and obj.name != ''">name = #{obj.name},</if>
+            <if test="obj.birthDate != null">birth_date = #{obj.birthDate},</if>
+            <if test="obj.idCard != null and obj.idCard != ''">id_card = #{obj.idCard},</if>
+            <if test="obj.region != null and obj.region != ''">region = #{obj.region},</if>
+            <if test="obj.undergraduateMajor != null and obj.undergraduateMajor != ''">undergraduate_major = #{obj.undergraduateMajor},</if>
+            <if test="obj.undergraduateSchool != null and obj.undergraduateSchool != ''">undergraduate_school = #{obj.undergraduateSchool},</if>
+            <if test="obj.schoolType != null and obj.schoolType != ''">school_type = #{obj.schoolType},</if>
+            <if test="obj.email != null and obj.email != ''">email = #{obj.email},</if>
+            <if test="obj.phone != null and obj.phone != ''">phone = #{obj.phone},</if>
+            <if test="obj.photo != null and obj.photo != ''">photo = #{obj.photo},</if>
+            <if test="obj.pwd != null and obj.pwd != ''">pwd = #{obj.pwd},</if>
+            <if test="obj.resume != null and obj.resume != ''">resume = #{obj.resume},</if>
+        </set>
+        where id = #{obj.id}
+    </update>
+
+    <delete id="deleteDb" parameterType="java.lang.Integer">
+		delete from candidate_info where id = #{id}
+	</delete>
+
+
+</mapper>

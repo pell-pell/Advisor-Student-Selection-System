@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.selection.mapper.AdmissionCatalogMapper">
+
+
+    <select id="getPageList" resultType="com.selection.entity.view.AdmissionCatalogView" parameterType="com.selection.entity.AdmissionCatalog">
+        select ss.*,ps.name as secondarySubjectName from admission_catalog ss
+        left join secondary_subject ps on ss.secondary_subject_id=ps.id
+        where 1=1
+        <if test="obj.year!=null">
+            and ss.year like concat('%',#{obj.year},'%')
+        </if>
+    </select>
+
+
+    <insert id="insertDb" parameterType="com.selection.entity.AdmissionCatalog">
+         insert into admission_catalog(secondary_subject_id,year,total_quota,recommend_quota,supplemental_quota,additional_notes,preliminary_exam_subjects,subject_retest)
+         values (#{obj.secondarySubjectId},#{obj.year},#{obj.totalQuota},#{obj.recommendQuota},#{obj.supplementalQuota},#{obj.additionalNotes},#{obj.preliminaryExamSubjects},#{obj.subjectRetest})
+    </insert>
+
+    <select id="getByIds" resultType="com.selection.entity.AdmissionCatalog" parameterType="java.lang.Integer">
+        select * from admission_catalog
+        where id=#{id}
+    </select>
+
+    <update id="updatesDb" parameterType="com.selection.entity.AdmissionCatalog">
+        update admission_catalog
+        <set>
+            <if test="obj.secondarySubjectId != null">secondary_subject_id = #{obj.secondarySubjectId},</if>
+            <if test="obj.year != null">year = #{obj.year},</if>
+            <if test="obj.totalQuota != null">total_quota = #{obj.totalQuota},</if>
+            <if test="obj.recommendQuota != null">recommend_quota = #{obj.recommendQuota},</if>
+            <if test="obj.supplementalQuota != null">supplemental_quota = #{obj.supplementalQuota},</if>
+            <if test="obj.additionalNotes != null and obj.additionalNotes！=''">additional_notes = #{obj.additionalNotes},</if>
+            <if test="obj.preliminaryExamSubjects != null and obj.preliminaryExamSubjects！=''">preliminary_exam_subjects = #{obj.preliminaryExamSubjects},</if>
+            <if test="obj.subjectRetest != null and obj.subjectRetest！=''">subject_retest = #{obj.subjectRetest},</if>
+        </set>
+        where id = #{obj.id}
+    </update>
+
+    <delete id="deleteDb" parameterType="java.lang.Integer">
+		delete from admission_catalog where id = #{id}
+	</delete>
+
+
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.selection.mapper.PretestScoresMapper">
+
+
+    <select id="getPageList" resultType="com.selection.entity.view.PretestScoresView" parameterType="com.selection.entity.view.PretestScoresView">
+        select ss.*,ps.name as candidateName from pretest_scores ss
+        left join candidate_info ps on ss.candidate_id=ps.id
+        where 1=1
+        <if test="obj.candidateName!=null and obj.candidateName!=''">
+            and ps.name like concat('%',#{obj.candidateName},'%')
+        </if>
+        <if test="obj.candidateId!=null">
+            and ss.candidate_id=#{obj.candidateId}
+        </if>
+        <if test="obj.candList !=null and obj.candList.size > 0">
+            and ss.candidate_id in
+            <foreach collection="obj.candList" item = "candId" open="(" separator="," close=")" index="index">
+                #{candId}
+            </foreach>
+        </if>
+    </select>
+
+
+    <insert id="insertDb" parameterType="com.selection.entity.PretestScores">
+         insert into pretest_scores(candidate_id,shuxue_score,foreign_language_score,comprehensive_score,retest_major_score,retest_total_score)
+         values (#{obj.candidateId},#{obj.shuxueScore},#{obj.foreignLanguageScore},#{obj.comprehensiveScore},#{obj.retestMajorScore},#{obj.retestTotalScore})
+    </insert>
+
+    <select id="getByIds" resultType="com.selection.entity.PretestScores" parameterType="java.lang.Integer">
+        select * from pretest_scores
+        where id=#{id}
+    </select>
+
+    <update id="updatesDb" parameterType="com.selection.entity.PretestScores">
+        update pretest_scores
+        <set>
+            <if test="obj.shuxueScore != null">shuxue_score = #{obj.shuxueScore},</if>
+            <if test="obj.foreignLanguageScore != null">foreign_language_score = #{obj.foreignLanguageScore},</if>
+            <if test="obj.comprehensiveScore != null">comprehensive_score = #{obj.comprehensiveScore},</if>
+            <if test="obj.retestMajorScore != null">retest_major_score = #{obj.retestMajorScore},</if>
+            <if test="obj.retestTotalScore != null">retest_total_score = #{obj.retestTotalScore},</if>
+            <if test="obj.candidateId != null">candidate_id = #{obj.candidateId},</if>
+        </set>
+        where id = #{obj.id}
+    </update>
+
+    <delete id="deleteDb" parameterType="java.lang.Integer">
+		delete from pretest_scores where id = #{id}
+	</delete>
+
+
+</mapper>

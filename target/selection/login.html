@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>研究生导师双选系统</title>
+	<meta name="keywords" content="研究生导师双选系统" />
+	<meta name="description" content="研究生导师双选系统" />
+
+	<link rel="stylesheet" type="text/css" href="/static/css/login/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/login/fonts/iconic/css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/login/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/login/css/main.css">
+	<style>
+		/*html {filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);-webkit-filter: grayscale(100%);}*/
+	</style>
+</head>
+
+<body>
+
+<div class="limiter">
+	<div class="container-login100" style="background-image: url('/static/images/containerbg.png');">
+		<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+			<form class="login100-form validate-form" id="loginformbtn">
+				<span class="login100-form-title p-b-49">研究生导师双选系统</span>
+
+				<div class="wrap-input100 validate-input m-b-23" data-validate="请输入账号">
+					<span class="label-input100">账号</span>
+					<input class="input100" type="text" name="userAccount" placeholder="请输入账号" autocomplete="off">
+					<span class="focus-input100" data-symbol="&#xf206;"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input m-b-23" data-validate="请输入密码">
+					<span class="label-input100">密码</span>
+					<input class="input100" type="password" name="userPwd" placeholder="请输入密码">
+					<span class="focus-input100" data-symbol="&#xf190;"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input m-b-23" data-validate="登录类型">
+					<span class="label-input100">登录类型</span>
+					<select class="input100" name="userRole" id="type">
+						<option value="1">管理员</option>
+						<option value="2">导师</option>
+						<option value="3">考生</option>
+					</select>
+					<span class="focus-input100" data-symbol="&#xf152;"></span>
+				</div>
+
+
+				<div class="container-login100-form-btn">
+					<div class="wrap-login100-form-btn">
+						<div class="login100-form-bgbtn"></div>
+						<button class="login100-form-btn" id="btnform" onclick="keyLogin()">登 录</button>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+<script src="/static/css/login/vendor/jquery/jquery-3.2.1.min.js"></script>
+<script src="/static/css/login/js/main.js"></script>
+<script type="text/javascript" src="/static/lib/layui/layui.js"></script>
+<script type="text/javascript" src="/static/js/xadmin.js"></script>
+<script type="text/javascript">
+
+	window.onload = function () {
+		if (window.parent.window != window) {
+			window.top.location = "/";
+		}
+	}
+
+	function validate (input) {
+		if($(input).attr('type') == 'email' || $(input).attr('name') == 'email') {
+			if($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
+				return false;
+			}
+		}
+		else {
+			if($(input).val().trim() == ''){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	$("#btnform").on("click",function(){
+		var input = $('.validate-input .input100');
+        if(validate(input)){
+			var index;
+			$.ajax({
+				url : "/api/login/login.do",
+				data:$('#loginformbtn').serialize(),
+				type : "POST",
+				dataType : "json",
+				beforeSend:function(XMLHttpRequest){
+					index= layer.msg('登录中，请稍候',{icon: 16,time:false,shade:0.8});
+				},success : function(data){
+					if(data.success){
+						window.location = "/sys/main/index.do";
+					}else{
+						layer.alert(data.msg,{icon:5});
+					}
+				},complete:function(XMLHttpRequest,textStatus){
+					layer.close(index);
+				},error:function(data){
+					layer.alert('网络异常或者数据错误', {icon: 2});
+				}
+			})
+			return false;
+		}
+
+	})
+
+
+	function keyLogin(){
+		if (event.keyCode==13)  //回车键的键值为13
+			document.getElementById("loginbtn").click(); //调用登录按钮的登录事件
+	}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+/* login */
+.loginBg{
+    width: 100%;
+    min-height: 400px;
+    background-image: url(../images/loginBg2.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+    position: relative;
+
+}
+.loginBg:after{
+    content:"";
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    /* background-color: rgba(59, 126, 195, 0.5); */
+    background-color: rgba(0, 95, 208, 0.5);
+}
+.titleBox{
+    width: 1200px;
+    position: absolute;
+    left: calc(50% - 600px);
+    top: 25%;
+    text-align: center;
+    z-index: 9
+}
+.titleBox .loginTitle{
+    /* position: absolute;
+    top: 40%;;
+    left: 30%; */
+    margin-top: 15px;
+    font-size: 42px;
+    font-weight: normal;
+    color: #fff;
+    margin-bottom: 0px;
+    text-shadow:3px 2px 6px rgba(0, 0, 0, 0.54)
+}
+.titleBox .loginSubTitle{
+    font-size: 22px;
+    margin-top: 10px;
+    color: #fff;
+    text-shadow:3px 2px 6px rgba(0, 0, 0, 0.54)
+
+}
+.mainLogin{
+    width: 100%;
+}
+.loginBox{
+    width: 350px;
+    min-height: 300px;
+    padding: 20px 50px 20px;
+    margin: 30px auto 0;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    background-clip: padding-box;
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+.loginBox .loginsTitle{
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    /* font-weight: bold; */
+    margin-bottom: 15px;
+}
+.loginForm{
+    padding: 10px 0;
+}
+.loginForm .form-row{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    align-items: center;
+}
+.iconBox{
+    width: 50px;
+    text-align: center;
+    padding: 9px 0;
+    background-color: #ccc;
+    color: #fff;
+}
+.loginForm .form-row input {
+    width: calc(100% - 50px);
+    padding: 10px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-left: none;
+}
+.loginForm .form-row input:focus {
+    border-color: #3E97DF;
+}
+.form-btn-row button{
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    padding: 10px 0;
+    text-align: center;
+    color: #fff;
+    background-color: #257cc6;
+    cursor: pointer;
+}
+.form-btn-row button:hover{
+    filter: opacity(.7);
+    /* transition: .2s; */
+}
+.form-other-row{
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.form-other-row a:hover{
+    color: #257cc6
+}
+.form-other-row p a{
+    color: #3E97DF
+}
+
+
+/* register */
+.registerBox{
+    width: 1200px;
+    margin: 20px auto;
+}
+.regBox{
+    padding: 5px 0;
+}
+.regBox .regTitle{
+    line-height: 46px;
+    border-bottom: 4px solid #3E97DF;
+    font-size: 24px;
+    width: 100%;
+    color: #3E97DF;
+    text-indent: 5px;
+    margin: 10px 0;
+}
+.warningTips{
+    border: 1px solid #ddd;
+    padding: 0 1em;
+    font-size: 15px;
+}
+.regForm{
+    padding: 10px;
+}
+.regForm .form-row{
+    width: 100%;
+    padding-bottom: 30px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.regForm .form-row .errorBox{
+    /* display: none; */
+    padding-left: 20px;
+    font-size: 13px;
+    color: #c10b1e;
+}
+.regForm .form-row .errorBox::before{
+    display: inline-block;
+    content: 'i';
+    width: 14px;
+    height: 14px;
+    font-size: 12px;
+    border-radius: 50%;
+    border: 1px solid #c10b1e;
+    color: #c10b1e;
+    line-height: 12px;
+    text-align: center;
+    margin-right: 6px;
+}
+.regForm .form-row label{
+    font-size: 15px;
+    width: 8em;
+}
+.regForm .form-row > input{
+    width: 600px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+.regForm .form-row select.selectType{
+    width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+.checkCt{
+    border-top: 4px solid #3E97DF;
+    padding: 20px 0;
+}
+.checkCt a{
+    color: #3E97DF;
+}
+.regBtn{
+    padding: 20px 0;
+    text-align: center;
+}
+.regBtn a{
+    margin-right: 20px;
+}
+.regBtn .btn{
+    padding: 0 25px;
+    color: #3E97DF;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 48px;
+    min-width: 150px;
+    text-align: center;
+    display: inline-block;
+    background-color: transparent;
+    text-decoration: none;
+    border: none;
+    transition: .2s
+}
+.btn.btn-primary {
+    color: #ffffff;
+    background-color: #3E97DF;
+}
+.btn.btn-primary:hover{
+    filter: opacity(.8)
+}
+.btn.btn-normal {
+    color: #3E97DF;
+    background-color: #EBF4FB;
+}
+.btn.btn-normal:hover{
+    filter: opacity(.8);
+}

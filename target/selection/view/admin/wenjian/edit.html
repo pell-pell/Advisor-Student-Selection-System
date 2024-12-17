@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>修改平台</title>
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="/static/css/font.css">
+    <link rel="stylesheet" href="/static/css/xadmin.css">
+</head>
+<body style="padding: 10px;background: white;min-height: 90%">
+<div id="divvuehtml" style="width: 90%;height: 100%;margin: auto;">
+    <form class="layui-form" id="add">
+        <input type="hidden" name="id" :value="menuItems.id">
+        <table class="layui-table" lay-size="sm">
+            <thead>
+                <tr>
+                    <th colspan="6" style="text-align: center;">编辑文件</th>
+                </tr>
+            </thead>
+            <tbody style="text-align: center;">
+            <tr>
+                <td>请选择文件上传</td>
+                <td style="text-align: left" colspan="6">
+                    <div class="layui-upload-drag" id="uploadadvert">
+                        <i class="layui-icon layui-icon-upload-drag"></i>
+                        <p>点击上传，或将文件拖拽到此处</p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">上传后自动显示文件信息（确认无误后点击新增）</td>
+            </tr>
+            <tr>
+                <td>文件名称</td>
+                <td style="text-align: left">
+                    <input type="text" v-model="filename" readonly="readonly" name="filename" placeholder="文件名称"  autocomplete="off" class="layui-input">
+                </td>
+                <td>文件类型</td>
+                <td style="text-align: left">
+                    <input type="text" v-model="filetype" readonly="readonly" name="filetype" placeholder="文件类型"  autocomplete="off" class="layui-input">
+                </td>
+                <td>文件大小</td>
+                <td style="text-align: left">
+                    <input type="text" v-model="filesize" readonly="readonly" name="filesize" placeholder="文件大小"  autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr >
+                <td colspan="6">
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">修改</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+</body>
+<script src="/static/lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/xadmin.js"></script>
+<script type="text/javascript" src="/static/js/vue.js"></script>
+<script th:inline="none">
+    var ve = new Vue({
+        el: '#divvuehtml',//绑定vue渲染范围
+        data: {
+            filename:"",
+            filetype:"",
+            filesize:"",
+            menuItems:{}//初始化菜单资源对象
+        },created: function () {//vue在打开html也没初始化创建函数
+            this.inin();//初始化菜单数据
+        },mounted: function () {//初始化html完成后在进行操作
+            layui.use(['form','layer','laydate','upload'], function(){
+                var form = layui.form;
+                var layer = layui.layer;
+                var upload = layui.upload;
+                //拖拽上传
+                upload.render({
+                    elem: '#uploadadvert'
+                    ,accept: 'file'
+                    ,field:"files"
+                    ,url: '/api/upload/uploads.do' //改成您自己的上传接口
+                    ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                        layer.load(); //上传loading
+                    }
+                    ,done: function(res){
+                        layer.closeAll('loading'); //关闭loading
+                        layer.msg('上传成功');
+                        ve.filename=res.data.filename;
+                        ve.filetype=res.data.filetype;
+                        ve.filesize=res.data.filesize;
+                        //console.log(res)
+                    },error: function(index, upload){
+                        layer.closeAll('loading'); //关闭loading
+                    }
+                });
+                //监听提交
+                form.on('submit(formDemo)', function(data){
+                    var index;
+                    $.ajax({
+                        url : "/api/admin/wenjian/updates.do",
+                        type : "POST",
+                        data : data.field,
+                        dataType : "json",
+                        beforeSend : function(XMLHttpRequest) {
+                            index = layer.msg('正在提交数据中，请稍候', {
+                                icon : 16,
+                                time : false,
+                                shade : 0.8
+                            });
+                        },success : function(data) {
+                            if(data.success){
+                                // 刷新父页面
+                                layer.alert(data.msg, {
+                                    icon : 6
+                                }, function() {
+                                    xadmin.close();
+                                    // 刷新父页面
+                                    parent.location.reload();
+                                });
+                            }else{
+                                xadmin.alert(data.msg,2)
+                            }
+                        },complete : function(XMLHttpRequest, textStatus) {
+                            layer.close(index);
+                        },error : function(data) {
+                            layer.alert('网络异常或者数据错误', {
+                                icon : 2
+                            });
+                        }
+                    });
+                    return false;
+                });
+            });
+        },methods: {//调用函数
+            inin :function (){
+                $.get("/api/admin/wenjian/getById",{"id":getUrlParam("id")},function(data){
+                    if(data.success){
+                        ve.menuItems = data.data;
+                        ve.filename=data.data.filename;
+                        ve.filetype=data.data.filetype;
+                        ve.filesize=data.data.filesize;
+                    }else{
+                        xadmin.alert("初始化数据错误");
+                    }
+                },"json")
+            }
+        },updated: function () {
+            layui.use(['form'], function(){
+                var form = layui.form;
+                form.render();
+            })
+        }
+    })
+
+    /**
+     * 取得url参数
+     */
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); // 构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  // 匹配目标参数
+        if (r != null) return unescape(r[2]); return null; // 返回参数值
+    }
+</script>
+</html>

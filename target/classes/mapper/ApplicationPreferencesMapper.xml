@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.selection.mapper.ApplicationPreferencesMapper">
+
+
+    <select id="getPageList" resultType="com.selection.entity.view.ApplicationPreferencesView" parameterType="com.selection.entity.view.ApplicationPreferencesView">
+        select ap.*,ci.`name` as candidateName,ps.`name` as primarySubjectName,ss.`name` as secondarySubjectName,
+        mtone.`name` as mentorOneName,mttwo.`name` as mentorTwoName,mtthree.`name` as mentorThreeName
+        from application_preferences ap
+        LEFT JOIN candidate_info ci on ap.candidate_id=ci.id
+        LEFT JOIN primary_subject ps on ap.primary_subject_id=ps.id
+        LEFT JOIN secondary_subject ss on ap.secondary_subject_id=ss.id
+        LEFT JOIN mentor mtone on ap.preferred_mentorone_id=mtone.id
+        LEFT JOIN mentor mttwo on ap.preferred_mentortwo_id=mttwo.id
+        LEFT JOIN mentor mtthree on ap.preferred_mentorthree_id=mtthree.id
+        where 1=1
+        <if test="obj.primarySubjectName!=null and obj.primarySubjectName!=''">
+            and ps.name like concat('%',#{obj.primarySubjectName},'%')
+        </if>
+        <if test="obj.candidateId!=null">
+            and ap.candidate_id=#{obj.candidateId}
+        </if>
+        <if test="obj.preferredMentoroneId!=null">
+            and ap.preferred_mentorone_id=#{obj.preferredMentoroneId} or ap.preferred_mentortwo_id=#{obj.preferredMentoroneId} or ap.preferred_mentorthree_id=#{obj.preferredMentoroneId}
+        </if>
+    </select>
+
+
+    <insert id="insertDb" parameterType="com.selection.entity.ApplicationPreferences">
+         insert into application_preferences(candidate_id,primary_subject_id,secondary_subject_id,preferred_mentorone_id,preferred_mentortwo_id,preferred_mentorthree_id,accept_adjustment)
+         values (#{obj.candidateId},#{obj.primarySubjectId},#{obj.secondarySubjectId},#{obj.preferredMentoroneId},#{obj.preferredMentortwoId},#{obj.preferredMentorthreeId},#{obj.acceptAdjustment})
+    </insert>
+
+    <select id="getByIds" resultType="com.selection.entity.ApplicationPreferences" parameterType="java.lang.Integer">
+        select * from application_preferences
+        where id=#{id}
+    </select>
+
+    <update id="updatesDb" parameterType="com.selection.entity.ApplicationPreferences">
+        update application_preferences
+        <set>
+            <if test="obj.candidateId != null">candidate_id = #{obj.candidateId},</if>
+            <if test="obj.primarySubjectId != null">primary_subject_id = #{obj.primarySubjectId},</if>
+            <if test="obj.secondarySubjectId != null">secondary_subject_id = #{obj.secondarySubjectId},</if>
+            <if test="obj.preferredMentoroneId != null">preferred_mentorone_id = #{obj.preferredMentoroneId},</if>
+            <if test="obj.preferredMentortwoId != null">preferred_mentortwo_id = #{obj.preferredMentortwoId},</if>
+            <if test="obj.preferredMentorthreeId != null">preferred_mentorthree_id = #{obj.preferredMentorthreeId},</if>
+            <if test="obj.acceptAdjustment != null">accept_adjustment = #{obj.acceptAdjustment},</if>
+        </set>
+        where id = #{obj.id}
+    </update>
+
+    <delete id="deleteDb" parameterType="java.lang.Integer">
+		delete from application_preferences where id = #{id}
+	</delete>
+
+
+</mapper>

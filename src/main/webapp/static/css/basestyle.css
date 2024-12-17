@@ -1,0 +1,85 @@
+body{
+    padding: 0;
+    margin: 0;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+.clearFix:before, .clearFix:after {
+    content: "";
+    display: table;
+    clear: both;
+    /* visibility: hidden; */
+}
+.topBox{
+    width: 100%;
+    box-shadow: 0px 3px 6px 0px rgba(9,41,77,0.15);
+}
+.topBox .topMain{
+    width: 1200px;
+    margin: 0 auto;
+}
+.topMain .headLogoBox {
+    margin: 15px 0;
+    float: left;
+    font-size: 18px;
+    font-weight: bold;
+}
+.headLogoBox .logo {
+    padding: 10px 18px;
+    text-decoration: none;
+    background: url(../images/logo.jpg) no-repeat left center transparent;
+    background-size: contain;
+}
+.headLogoBox .logoTtitle {
+    font-size: 22px;
+    font-weight: bold;
+    padding: 0 20px 0 10px;
+    display: inline-block;
+}
+.headLogoBox .subTitle {
+    border-left: 1px solid #CBCBCB;
+    padding-left: 20px;
+}
+.headLoginBox{
+    float: right;
+    color: #727475;
+    font-size: 14px;
+}
+.headLoginBox a.zone {
+    padding: 20px 16px;
+    display: inline-block;
+}
+.topUserName {
+    display: inline-block;
+    position: relative;
+}
+.topUserName .optionList {
+    display: none;
+    position: absolute;
+    right: 15px;
+    top: 60px;
+    z-index: 2;
+    background: #ffffff;
+    /* padding: 8px 0; */
+    box-shadow: 0 4px 16px 0 rgba(14, 49, 88, 0.12);
+}
+.optionList ul,.optionList ul li{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.optionList ul{
+    margin: 10px;
+}
+.optionList ul li{
+    padding: 10px 5px;
+    border-bottom: 1px solid #eee;
+}
+.optionList ul li:nth-last-child(1){
+    border-bottom: none;
+}
+.optionList ul li:hover{
+    color: #3E97EF
+}

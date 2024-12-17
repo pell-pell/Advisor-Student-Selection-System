@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>修改</title>
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="/static/css/font.css">
+    <link rel="stylesheet" href="/static/css/xadmin.css">
+</head>
+<body style="padding: 10px;background: white;min-height: 90%">
+<div id="divvuehtml" style="width: 90%;height: 100%;margin: auto;">
+    <form class="layui-form" id="add">
+        <input type="hidden" name="id" :value="menuItems.id">
+        <input type="hidden" name="photo" v-model="menuItems.photo"/>
+        <table class="layui-table" lay-size="sm">
+            <thead>
+                <tr>
+                    <th colspan="4" style="text-align: center;">修改</th>
+                </tr>
+            </thead>
+            <tbody style="text-align: center;">
+            <tr>
+                <td>考生名称</td>
+                <td colspan="3">
+                    <input type="text" name="name" :value="menuItems.name" placeholder="请输入考生名称"  autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td>登录密码</td>
+                <td colspan="3">
+                    <input type="text" name="pwd" :value="menuItems.pwd" placeholder="请输入登录密码"  autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td>考生证件号</td>
+                <td colspan="3">
+                    <input type="text" name="idCard" :value="menuItems.idCard" placeholder="请输入考生证件号"  autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td>考生生日</td>
+                <td colspan="3">
+                    <input type="text" name="birthDate" :value="menuItems.birthDate" id="birthDate"  placeholder="请输入考生生日"  autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td>考生电话</td>
+                <td colspan="3">
+                    <input type="text" name="phone" :value="menuItems.phone" placeholder="请输入考生电话"  autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td>考生邮箱</td>
+                <td colspan="3">
+                    <input type="text" name="email" :value="menuItems.email" placeholder="请输入考生邮箱"  autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td>生源地</td>
+                <td colspan="3">
+                    <input type="text" name="region" :value="menuItems.region" placeholder="请输入生源地"  autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td>本科专业</td>
+                <td colspan="3">
+                    <input type="text" name="undergraduateMajor" :value="menuItems.undergraduateMajor" placeholder="请输入本科专业"  autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td>本科学院</td>
+                <td colspan="3">
+                    <input type="text" name="undergraduateSchool" :value="menuItems.undergraduateSchool" placeholder="请输入本科学院"  autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td>本科学院类型</td>
+                <td colspan="3">
+                    <input type="text" name="schoolType" :value="menuItems.schoolType" placeholder="请输入本科学院类型"  autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td>考生简介</td>
+                <td colspan="3">
+                    <textarea type="text" name="resume" :value="menuItems.resume" class="layui-textarea" placeholder="请输入考生简介"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>头像上传</td>
+                <td style="text-align: left">
+                    <div class="layui-upload-drag" id="uploadadvert">
+                        <i class="layui-icon layui-icon-upload-drag"></i>
+                        <p>点击上传，或将文件拖拽到此处</p>
+                        <div class="layui-hide" id="uploadDemoView">
+                            <hr>
+                            <img src="" alt="上传成功后渲染" style="max-width: 196px">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr >
+                <td colspan="4">
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">修改</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+</body>
+<script src="/static/lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/xadmin.js"></script>
+<script type="text/javascript" src="/static/js/vue.js"></script>
+<script th:inline="none">
+    var ve = new Vue({
+        el: '#divvuehtml',//绑定vue渲染范围
+        data: {
+            "photo":"",
+            menuItems:{}//初始化菜单资源对象
+
+        },created: function () {//vue在打开html也没初始化创建函数
+            this.inin();
+        },mounted: function () {//初始化html完成后在进行操作
+            layui.use(['form','layer','laydate','upload'], function(){
+                var form = layui.form;
+                var layer = layui.layer;
+                var laydate = layui.laydate;
+                var upload = layui.upload;
+                //拖拽上传
+                upload.render({
+                    elem: '#uploadadvert'
+                    ,accept: 'images'
+                    ,field:"files"
+                    ,url: '/api/upload/uploads.do' //改成您自己的上传接口
+                    ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                        layer.load(); //上传loading
+                    }
+                    ,done: function(res){
+                        layer.closeAll('loading'); //关闭loading
+                        layer.msg('上传成功');
+                        ve.menuItems.photo=res.data;
+                        layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', "/api/upload/getImage.do?filePath="+res.data);
+                        //console.log(res)
+                    },error: function(index, upload){
+                        layer.closeAll('loading'); //关闭loading
+                    }
+                });
+                //监听提交
+                form.on('submit(formDemo)', function(data){
+                    var index;
+                    $.ajax({
+                        url : "/api/admin/candidateinfo/updates.do",
+                        type : "POST",
+                        data : data.field,
+                        dataType : "json",
+                        beforeSend : function(XMLHttpRequest) {
+                            index = layer.msg('正在提交数据中，请稍候', {
+                                icon : 16,
+                                time : false,
+                                shade : 0.8
+                            });
+                        },success : function(data) {
+                            if(data.success){
+                                // 刷新父页面
+                                layer.alert(data.msg, {
+                                    icon : 6
+                                }, function() {
+                                    xadmin.close();
+                                    // 刷新父页面
+                                    parent.location.reload();
+                                });
+                            }else{
+                                xadmin.alert(data.msg,2)
+                            }
+                        },complete : function(XMLHttpRequest, textStatus) {
+                            layer.close(index);
+                        },error : function(data) {
+                            layer.alert('网络异常或者数据错误', {
+                                icon : 2
+                            });
+                        }
+                    });
+                    return false;
+                });
+            });
+        },methods: {//调用函数
+            inin :function (){
+                $.get("/api/admin/candidateinfo/getById.do",{"id":getUrlParam("id")},function(data){
+                    if(data.success){
+                        ve.menuItems = data.data;
+                        if(data.data.photo!=null){
+                            layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', "/api/upload/getImage.do?filePath="+data.data.photo);
+                        }
+                    }else{
+                        xadmin.alert("初始化数据错误");
+                    }
+                },"json")
+            }
+        },updated: function () {
+            layui.use(['form'], function(){
+                var form = layui.form;
+                form.render();
+            })
+        }
+    })
+
+    /**
+     * 取得url参数
+     */
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); // 构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  // 匹配目标参数
+        if (r != null) return unescape(r[2]); return null; // 返回参数值
+    }
+</script>
+</html>

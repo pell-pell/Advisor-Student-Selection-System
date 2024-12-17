@@ -1,0 +1,54 @@
+.yxxq {
+    color: #fff;
+    font-size: 18px;
+}
+
+.yxxq .pic {
+    width: 100%;
+    height: auto;
+}
+
+.yxxq p {
+    margin-bottom: 5px;
+}
+
+.yxxq .info {
+    margin: 10px 0 15px;
+    color: rgba(255, 255, 255, .6);
+}
+
+.yxxq .tabs {
+    color: rgba(255, 255, 255, .4);
+}
+
+.yxxq .tabs_tip {
+    color: rgb(43, 146, 249);
+}
+
+.yxxq .tabs_tip span {
+    margin-right: 20px;
+}
+
+.layui-table th {
+    background-color: #066e78;
+    color: #fff;
+    padding: 16px 10px!important;
+    border: none;
+}
+
+.layui-table td,
+.layui-table th {
+    text-align: center!important;
+    padding: 15px;
+}
+
+.sell{
+    margin-top: 50px;
+}
+
+.sell h2{
+    margin-bottom: 20px;
+    font-size: 30px;
+    text-align: center;
+    color: #fff;
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.selection.mapper.MentorChoiceConfirmationMapper">
+
+
+    <select id="getPageList" resultType="com.selection.entity.view.MentorChoiceConfirmationView" parameterType="com.selection.entity.view.MentorChoiceConfirmationView">
+        select ss.*,ps.name as candidateName,mt.name as mentorName from mentor_choice_confirmation ss
+        left join candidate_info ps on ss.candidate_id=ps.id
+        left join mentor mt on ss.mentor_id=mt.id
+        where 1=1
+        <if test="obj.candidateName!=null and obj.candidateName!=''">
+            and ps.name like concat('%',#{obj.candidateName},'%')
+        </if>
+        <if test="obj.mentorId!=null">
+            and ss.mentor_id=#{obj.mentorId}
+        </if>
+    </select>
+
+
+    <insert id="insertDb" parameterType="com.selection.entity.MentorChoiceConfirmation">
+         insert into mentor_choice_confirmation(mentor_id,candidate_id,preference_order,confirmed)
+         values (#{obj.mentorId},#{obj.candidateId},#{obj.preferenceOrder},#{obj.confirmed})
+    </insert>
+
+    <select id="getByIds" resultType="com.selection.entity.MentorChoiceConfirmation" parameterType="java.lang.Integer">
+        select * from mentor_choice_confirmation
+        where id=#{id}
+    </select>
+
+    <update id="updatesDb" parameterType="com.selection.entity.MentorChoiceConfirmation">
+        update mentor_choice_confirmation
+        <set>
+            <if test="obj.mentorId != null">mentor_id = #{obj.mentorId},</if>
+            <if test="obj.preferenceOrder != null">preference_order = #{obj.preferenceOrder},</if>
+            <if test="obj.confirmed != null">confirmed = #{obj.confirmed},</if>
+            <if test="obj.candidateId != null">candidate_id = #{obj.candidateId},</if>
+        </set>
+        where id = #{obj.id}
+    </update>
+
+    <delete id="deleteDb" parameterType="java.lang.Integer">
+		delete from mentor_choice_confirmation where id = #{id}
+	</delete>
+
+
+</mapper>

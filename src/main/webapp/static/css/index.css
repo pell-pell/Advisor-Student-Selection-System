@@ -1,0 +1,107 @@
+.nav {
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    height: 100%;
+    width: 200px;
+}
+
+.nav .menu {
+    height: 60px;
+    line-height: 60px;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 2px;
+
+}
+
+.nav ul li a {
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
+    height: 40px;
+    line-height: 40px;
+    display: block;
+    width: 100%;
+    transition: all .2s ease;
+    letter-spacing: 2px;
+}
+
+.nav ul li a:hover {
+    color: rgb(81, 153, 216);
+    transition: all .2s ease;
+}
+
+.main {
+    box-sizing: border-box;
+    padding: 30px 20px 0;
+    width: calc(100% - 230px);
+}
+
+.main h2 {
+    color: #fff;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+/* 轮播图 */
+.swiper-container_banner {
+    width: 100%;
+    height: 380px;
+}
+
+.swiper-container img {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-pagination {
+    text-align: center;
+}
+
+.swiper-container .swiper-pagination-bullet {
+    margin-right: 5px;
+    right: 0;
+    opacity: 1;
+    width: 10px;
+    height: 10px;
+    background: none;
+    border-radius: 6px;
+    border: 1px solid #fff;
+}
+
+.swiper-container .swiper-pagination-bullet-active {
+    opacity: 1;
+    width: 30px;
+    height: 10px;
+    background: #fff;
+    border-radius: 5px;
+}
+
+.swiper-button-next,.swiper-button-prev{
+    display: none;
+}
+
+.swiper-container:hover .swiper-button-next,.swiper-container:hover .swiper-button-prev{
+display: block;
+}
+
+.swiper-container_free{
+    height: 190px;
+}
+
+.swiper-container_free .swiper-button-next,.swiper-container_free .swiper-button-prev{
+    top: 40%;
+}
+
+.swiper-container_free .pic{
+    height: 150px;
+}
+
+.swiper-container_free p{
+   text-align: center;
+   color: #fff;
+   height: 40px;
+   line-height: 40px;
+   font-size: 18px;
+}

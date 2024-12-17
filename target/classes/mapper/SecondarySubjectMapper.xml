@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.selection.mapper.SecondarySubjectMapper">
+
+
+    <select id="getPageList" resultType="com.selection.entity.view.SecondarySubjectView" parameterType="com.selection.entity.SecondarySubject">
+        select ss.*,ps.name as primarySubjectName from secondary_subject ss
+        left join primary_subject ps on ss.primary_subject_id=ps.id
+        where 1=1
+        <if test="obj.name!=null and obj.name!=''">
+            and ss.name like concat('%',#{obj.name},'%')
+        </if>
+    </select>
+
+
+    <insert id="insertDb" parameterType="com.selection.entity.SecondarySubject">
+         insert into secondary_subject(name,primary_subject_id)
+         values (#{obj.name},#{obj.primarySubjectId})
+    </insert>
+
+    <select id="getByIds" resultType="com.selection.entity.SecondarySubject" parameterType="java.lang.Integer">
+        select * from secondary_subject
+        where id=#{id}
+    </select>
+
+    <update id="updatesDb" parameterType="com.selection.entity.SecondarySubject">
+        update secondary_subject
+        <set>
+            <if test="obj.name != null and obj.name != ''">name = #{obj.name},</if>
+            <if test="obj.primarySubjectId != null">primary_subject_id = #{obj.primarySubjectId},</if>
+        </set>
+        where id = #{obj.id}
+    </update>
+
+    <delete id="deleteDb" parameterType="java.lang.Integer">
+		delete from secondary_subject where id = #{id}
+	</delete>
+
+
+</mapper>

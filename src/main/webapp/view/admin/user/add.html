@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>新增</title>
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="/static/css/font.css">
+    <link rel="stylesheet" href="/static/css/xadmin.css">
+</head>
+<body style="padding: 10px;background: white;min-height: 90%">
+<div id="divvuehtml" style="width: 90%;height: 100%;margin: auto;">
+    <form class="layui-form" id="add">
+        <input type="hidden" name="userRole" value="2">
+        <table class="layui-table" lay-size="sm">
+            <thead>
+                <tr>
+                    <th colspan="4" style="text-align: center;">新增</th>
+                </tr>
+            </thead>
+            <tbody style="text-align: center;">
+            <tr>
+                <td>姓名</td>
+                <td colspan="3">
+                    <input type="text" name="userName"  placeholder="请输入姓名"  autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td>账号</td>
+                <td colspan="3">
+                    <input type="text" name="userAccount"  placeholder="请输入账号"  autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td>密码</td>
+                <td colspan="3">
+                    <input type="text" name="userPwd"  placeholder="请输入密码"  autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr>
+                <td>性别</td>
+                <td colspan="3">
+                    <select name="userSex"  required lay-verify="required">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>电话</td>
+                <td colspan="3">
+                    <input type="text" name="userPhone"  placeholder="请输入电话"  autocomplete="off" class="layui-input">
+                </td>
+            </tr>
+            <tr >
+                <td colspan="4">
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">新增</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+</body>
+<script src="/static/lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/xadmin.js"></script>
+<script type="text/javascript" src="/static/js/vue.js"></script>
+<script th:inline="none">
+    var ve = new Vue({
+        el: '#divvuehtml',//绑定vue渲染范围
+        data: {
+
+        },created: function () {//vue在打开html也没初始化创建函数
+
+        },mounted: function () {//初始化html完成后在进行操作
+            setTimeout(function() {
+                layui.use(['table','form','layer','upload','laydate'],function() {
+                    var form = layui.form;
+                    var layer = layui.layer;
+                    var laydate = layui.laydate;
+                    //监听提交
+                    form.on('submit(formDemo)', function(data){
+                        var index;
+                        $.ajax({
+                            url : "/api/admin/user/insert.do",
+                            type : "POST",
+                            data : data.field,
+                            dataType : "json",
+                            beforeSend : function(XMLHttpRequest) {
+                                index = layer.msg('正在提交数据中，请稍候', {
+                                    icon : 16,
+                                    time : false,
+                                    shade : 0.8
+                                });
+                            },success : function(data) {
+                                if(data.success){
+                                    // 刷新父页面
+                                    layer.alert(data.msg, {
+                                        icon : 6
+                                    }, function() {
+                                        xadmin.close();
+                                        // 刷新父页面
+                                        parent.location.reload();
+                                    });
+                                }else{
+                                    xadmin.alert(data.msg,2)
+                                }
+                            },complete : function(XMLHttpRequest, textStatus) {
+                                layer.close(index);
+                            },error : function(data) {
+                                layer.alert('网络异常或者数据错误', {
+                                    icon : 2
+                                });
+                            }
+                        });
+                        return false;
+                    });
+                });
+            },100)
+        },methods: {//调用函数
+
+        },updated: function () {
+            layui.use(['form'], function(){
+                var form = layui.form;
+                form.render();
+            })
+        }
+    })
+</script>
+</html>

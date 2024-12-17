@@ -1,0 +1,34 @@
+.layui-tab-title li {
+    color: #cab9b9;
+    font-weight: bold;
+}
+
+.layui-tab-brief>.layui-tab-title .layui-this {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.layui-table td,
+.layui-table th {
+    text-align: center;
+    padding: 15px;
+}
+
+.layui-table th {
+    background-color: #066e78;
+    color: #fff;
+    padding: 20px 15px;
+}
+.my_info{
+    margin: 40px 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    color: rgba(255, 255, 255, .6);
+}
+
+.my_info .lable{
+    color: rgba(255, 255, 255, .9);
+
+}

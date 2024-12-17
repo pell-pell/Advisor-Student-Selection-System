@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.selection.mapper.MentorMapper">
+
+
+    <select id="getPageList" resultType="com.selection.entity.Mentor" parameterType="com.selection.entity.Mentor">
+        select * from mentor
+        where 1=1
+        <if test="obj.name!=null and obj.name!=''">
+            and name like concat('%',#{obj.name},'%')
+        </if>
+        <if test="obj.id!=null">
+            and id=#{obj.id}
+        </if>
+    </select>
+
+
+    <insert id="insertDb" parameterType="com.selection.entity.Mentor">
+         insert into mentor(name,pwd,title,email,phone,photo,bio,eligible_for_admission)
+         values (#{obj.name},#{obj.pwd},#{obj.title},#{obj.email},#{obj.phone},#{obj.photo},#{obj.bio},#{obj.eligibleForAdmission})
+    </insert>
+
+    <select id="getByIds" resultType="com.selection.entity.Mentor" parameterType="java.lang.Integer">
+        select * from mentor
+        where id=#{id}
+    </select>
+
+    <update id="updatesDb" parameterType="com.selection.entity.Mentor">
+        update mentor
+        <set>
+            <if test="obj.name != null and obj.name != ''">name = #{obj.name},</if>
+            <if test="obj.pwd != null and obj.pwd != ''">pwd = #{obj.pwd},</if>
+            <if test="obj.title != null and obj.title != ''">title = #{obj.title},</if>
+            <if test="obj.email != null and obj.email != ''">email = #{obj.email},</if>
+            <if test="obj.phone != null and obj.phone != ''">phone = #{obj.phone},</if>
+            <if test="obj.photo != null and obj.photo != ''">photo = #{obj.photo},</if>
+            <if test="obj.bio != null and obj.bio != ''">bio = #{obj.bio},</if>
+            <if test="obj.eligibleForAdmission != null">eligible_for_admission = #{obj.eligibleForAdmission},</if>
+        </set>
+        where id = #{obj.id}
+    </update>
+
+    <delete id="deleteDb" parameterType="java.lang.Integer">
+		delete from mentor where id = #{id}
+	</delete>
+
+
+</mapper>
